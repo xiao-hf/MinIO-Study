@@ -51,6 +51,7 @@ class JavaMinio1ApplicationTests {
                 .expiry(3, TimeUnit.MINUTES) // 指定过期时间
                 .method(method) // 指定访问方式 GET等
                 .build()
+
         );
     }
 
