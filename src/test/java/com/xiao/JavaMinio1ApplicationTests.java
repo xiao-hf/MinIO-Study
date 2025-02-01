@@ -10,7 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @SpringBootTest
@@ -21,8 +23,12 @@ class JavaMinio1ApplicationTests {
 
     @Test
     void main() throws Exception {
-        log.info(getObjUrl("myfile", "Cat girl~", Method.GET));
+        byte[] bytes = getFile("myfile", "Cat girl~");
+        FileOutputStream fos = new FileOutputStream("D:\\bak\\aaaa.jpeg");
+        fos.write(bytes);
+        fos.close();
 
+//        log.info(getObjUrl("myfile", "Cat girl~", Method.GET));
 //        uploadFile1("myfile", "D:\\develop\\猫娘.jpeg", "Cat girl~");
 //        uploadFile2("myfile", "D:\\develop\\幻境.jpeg", "Fantasy view~");
 //        StatObjectResponse resp = minioClient.statObject(StatObjectArgs.builder().bucket("myfile").object("Cat girl~").build());
@@ -30,11 +36,20 @@ class JavaMinio1ApplicationTests {
     }
 
     @Test
+    byte[] getFile(String bucketName, String objName) throws Exception {
+        return minioClient.getObject(GetObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(objName)
+                .build()).readAllBytes();
+    }
+
+    @Test
     String getObjUrl(String bucketName, String ObjName, Method method) throws Exception {
         return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
                 .bucket(bucketName)
                 .object(ObjName)
-                .method(method)
+                .expiry(3, TimeUnit.MINUTES) // 指定过期时间
+                .method(method) // 指定访问方式 GET等
                 .build()
         );
     }
