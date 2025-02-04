@@ -1,3 +1,27 @@
 spring:
   application:
     name: java_minio1
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/minio_demo?characterEncoding=UTF8
+    username: root
+    password: root
+  devtools:
+    restart:
+      enabled: true  #设置开启热部署
+      additional-paths: src/main/java #重启目录
+      exclude: WEB-INF/**
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    local-cache-scope: statement #关闭缓存
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 自定义注解
+minio:
+  endpoint: http://192.168.80.128:9000
+  username: minioadmin
+  password: minioadmin
+  bucket: user-bucket
