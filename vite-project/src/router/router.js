@@ -1,6 +1,5 @@
 // 创建路由对象, 并配置好路由, 然后把路由对象导出
-import { createRouter, createWebHistory} from "vue-router";
-
+import {createRouter, createWebHistory, useRoute} from "vue-router";
 // 创建router路由对象
 const router = createRouter({
     // 路由历史

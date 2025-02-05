@@ -52,4 +52,12 @@
                  left join t_user_contract c on u.id = c.uid
         where u.id = #{id}
     </select>
+    <select id="selectAll" resultMap="UserResultMap">
+        select u.*, i.id iid, c.id cid,
+               i.bucket imageBucket, i.object imageObject,
+               c.bucket contractBucket, c.object contractObject
+        from t_user_info u
+                 left join t_user_image i on u.id = i.uid
+                 left join t_user_contract c on u.id = c.uid
+    </select>
 </mapper>

@@ -1,5 +1,15 @@
 package com.xiao;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.xiao.entity.UserImage;
+import com.xiao.entity.UserInfo;
+import com.xiao.mapper.UserImageMapper;
+import com.xiao.mapper.UserInfoMapper;
+import com.xiao.service.UserImageService;
+import com.xiao.service.UserInfoService;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
@@ -18,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -29,13 +40,61 @@ class JavaMinio1ApplicationTests {
     @Resource
     private MinioClient minioClient;
 
+    @Resource
+    private UserImageMapper userImageMapper;
+
+    @Resource
+    private UserImageService userImageService;
+
+    @Resource
+    private UserInfoMapper userInfoMapper;
+
+    @Resource
+    private UserInfoService userInfoService;
+
+    @Test
+    void test1() {
+        System.out.println(userInfoService.getUserList());
+    }
+
+    @Test
+    void generatorUser() {
+        for (int i = 1; i <= 10; i++) {
+            Date now = new Date();
+            UserInfo userInfo = new UserInfo();
+            userInfo.setId(i);
+            userInfo.setSex(1);
+            userInfo.setNick("11");
+            userInfo.setPassword("11");
+            userInfo.setAddress("111");
+            userInfo.setEmail("111");
+            userInfo.setPhone("1111");
+            userInfo.setCreateTime(now);
+            userInfo.setUpdateTime(now);
+            userInfoMapper.insert(userInfo);
+        }
+    }
+
+    @Test
+    void test() {
+//        UserImage one = userImageService.lambdaQuery().eq(UserImage::getUid, 1).one();
+//        System.out.println(one);
+        LambdaQueryWrapper<UserImage> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserImage::getUid, 1);
+        int delete = userImageMapper.delete(wrapper);
+        System.out.println(delete);
+    }
+
     @Test
     void main() throws Exception {
 //        listObjects("myfile");
 //        removeObject("myfile", "幻境");
-        removeBucket("userbucket");
-        createBucket("user-bucket");
+//        removeBucket("userbucket");
+//        createBucket("user-bucket");
 //        createBucket("userbucket");
+        LambdaQueryChainWrapper<UserImage> wrapper = new LambdaQueryChainWrapper<>(userImageMapper);
+        UserImage userImage = wrapper.eq(UserImage::getUid, "1").one();
+        System.out.println(userImage);
     }
 
     @Test

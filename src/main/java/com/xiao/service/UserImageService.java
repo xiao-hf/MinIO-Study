@@ -9,5 +9,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-02-03 18:25:49
 */
 public interface UserImageService extends IService<UserImage> {
-
+    boolean saveOrUpdateImage(Integer uid, String bucket, String object);
 }

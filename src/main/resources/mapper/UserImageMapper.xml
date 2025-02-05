@@ -17,4 +17,9 @@
         id,uid,bucket,
         object,create_time,update_time
     </sql>
+    <insert id="saveOrUpdateUserImage" parameterType="com.xiao.entity.UserImage">
+        insert into t_user_image (uid, bucket, object) values (#{uid}, #{bucket}, #{object})
+        on duplicate key update
+        uid = #{uid}, bucket = #{bucket}, object = #{object}
+    </insert>
 </mapper>

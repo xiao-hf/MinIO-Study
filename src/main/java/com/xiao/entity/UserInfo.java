@@ -8,8 +8,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.simpleframework.xml.Transient;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 
@@ -67,19 +69,21 @@ public class UserInfo implements Serializable {
     @TableField(value = "address")
     private String address;
 
-    /**
-     * 创建时间
-     */
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "create_time")
-    private Date createTime;
 
     /**
      * 更新时间
      */
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "update_time")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+    /**
+     * 创建时间
+     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @TableField(value = "create_time")
+    private Date createTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

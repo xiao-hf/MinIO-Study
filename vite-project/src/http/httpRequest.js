@@ -11,6 +11,12 @@ export function doGet(url, params) {
     });
 }
 
+export function doDelete(url, params) {
+    return axios.delete(url, {
+        params: params
+    });
+}
+
 /**
  * axios发送post请求
  * @param url '/api/user'
@@ -18,4 +24,8 @@ export function doGet(url, params) {
  */
 export function doPost(url, data) {
     return  axios.post(url, data);
+}
+
+export function doPut(url, data) {
+    return axios.put(url, data);
 }

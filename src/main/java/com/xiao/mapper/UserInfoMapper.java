@@ -4,6 +4,8 @@ import com.xiao.entity.UserInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author Administrator
 * @description 针对表【t_user_info】的数据库操作Mapper
@@ -14,6 +16,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
     UserInfo selectUserById(Integer id);
+
+    List<UserInfo> selectAll();
 }
 
 

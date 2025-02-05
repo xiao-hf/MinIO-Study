@@ -15,33 +15,62 @@
     <el-table-column prop="updateTime" label="修改时间"/>
     <el-table-column label="操作">
       <template #default="scope">
-        <a :href= "'/edit/' + scope.row.id">编辑</a> <a href="">删除</a>
+        <a href= "javascript:void(0)" @click="download(scope.row.id)" v-if="scope.row.userContractDO !== null">下载</a>&nbsp;
+        <span v-else>下载</span>&nbsp;
+        <a :href= "'/edit/' + scope.row.id">编辑</a>&nbsp;
+        <a href= "javascript:void(0)" @click="delUser(scope.row.id)">删除</a>
       </template>
     </el-table-column>
   </el-table>
-</template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<!--  <el-form-item>-->
+<!--    <el-button style="margin: auto" type="primary" @click="alertFail('失败')">测试按钮</el-button>-->
+<!--  </el-form-item>-->
+</template>
 
 <script setup>
 import axios from "axios";
+import {doDelete, doGet} from "../http/httpRequest.js";
+import {onMounted, ref} from "vue";
+import {ElMessage} from "element-plus";
 
 axios.defaults.baseURL = "http://localhost:8080";
-import { doGet } from "../http/httpRequest.js";
-import {onMounted, ref} from "vue";
+
+function delUser(id) {
+  doDelete("/api/delUser/" + id, {}).then(resp => {
+    if (resp.data.code === 200) {
+      // 删除成功, 提示一下
+      alertSuccess("删除成功!")
+    } else {
+      // 删除失败, 提示一下
+      alertFail("删除失败!")
+    }
+    window.location.reload()
+  });
+}
+
+const alertSuccess = (msg) => {
+  ElMessage({
+    message: msg,
+    type: 'success',
+    plain: true,
+  })
+}
+
+const alertFail = (msg) => {
+  ElMessage({
+    message: msg,
+    type: 'error',
+    plain: true,
+  })
+}
+
+function download(id) {
+  let iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  iframe.src = axios.defaults.baseURL + "/api/download/" + id;
+  document.body.appendChild(iframe);
+}
 
 let userList = ref( [{}] );
 
@@ -66,3 +95,18 @@ function getData() {
       })
 }
 </script>
+
+<style scoped>
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+</style>

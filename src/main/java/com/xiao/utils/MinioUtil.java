@@ -74,10 +74,10 @@ public class MinioUtil {
         log.info("{}", resp);
     }
 
-    public void uploadFile(String bucketName, MultipartFile file) throws Exception {
+    public void uploadFile(String bucketName, String object, MultipartFile file) throws Exception {
         ObjectWriteResponse resp = minioClient.putObject(PutObjectArgs.builder()
                 .bucket(bucketName)
-                .object(file.getOriginalFilename())
+                .object(object)
                 .stream(file.getInputStream(), file.getSize(), -1)
                 .build());
         log.info("{}", resp.versionId());
